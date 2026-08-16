@@ -226,9 +226,11 @@ document.querySelector("#stop-response-btn").addEventListener("click", () => {
 });
 
 document.querySelector("#delete-chats-btn").addEventListener("click", () => {
-  chatHistory.length = 0;
-  chatsContainer.innerHTML = "";
-  document.body.classList.remove("chats-active", "bot-responding");
+  if (confirm("Hapus semua chat? Tindakan ini tidak bisa dibatalkan.")) {
+    chatHistory.length = 0;
+    chatsContainer.innerHTML = "";
+    document.body.classList.remove("chats-active", "bot-responding");
+  }
 });
 
 document.querySelectorAll(".suggestions-item").forEach((suggestion) => {
