@@ -28,8 +28,65 @@ const toggleTheme = () => {
   themeToggleBtn.textContent = isDark ? "light_mode" : "dark_mode";
 };
 
-initTheme();
-themeToggleBtn.addEventListener("click", toggleTheme);
+const translations = {
+  en: {
+    greeting: "Hello, there",
+    subheading: "How can I help you today?",
+    placeholder: "Ask Assistant",
+    suggestions: [
+      "Design a home office setup for remote work under $500.",
+      "How can I level up my web development expertise in 2025?",
+      "Suggest some useful tools for debugging JavaScript code.",
+      "Create a React JS component for the simple todo list app."
+    ]
+  },
+  id: {
+    greeting: "Halo, selamat datang",
+    subheading: "Apa yang bisa saya bantu hari ini?",
+    placeholder: "Tanya Asisten",
+    suggestions: [
+      "Rancang setup home office untuk kerja remote di bawah $500.",
+      "Bagaimana cara meningkatkan keahlian web development saya di 2025?",
+      "Sarankan beberapa tools berguna untuk debugging kode JavaScript.",
+      "Buat komponen React JS untuk aplikasi todo list sederhana."
+    ]
+  }
+};
+
+let currentLang = localStorage.getItem("language") || "en";
+
+const setLanguage = (lang) => {
+  currentLang = lang;
+  localStorage.setItem("language", lang);
+  updateLanguage();
+};
+
+const updateLanguage = () => {
+  const t = translations[currentLang];
+  document.querySelector(".app-header .heading").textContent = t.greeting;
+  document.querySelector(".app-header .sub-heading").textContent = t.subheading;
+  document.querySelector(".prompt-input").placeholder = t.placeholder;
+  
+  const suggestionsList = document.querySelectorAll(".suggestions-item .text");
+  suggestionsList.forEach((item, i) => {
+    if (t.suggestions[i]) item.textContent = t.suggestions[i];
+  });
+};
+
+const initTheme = () => {
+  const savedTheme = localStorage.getItem("theme") || "light";
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    themeToggleBtn.textContent = "light_mode";
+  }
+};
+
+const toggleTheme = () => {
+  document.body.classList.toggle("dark-mode");
+  const isDark = document.body.classList.contains("dark-mode");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+  themeToggleBtn.textContent = isDark ? "light_mode" : "dark_mode";
+};
 
 const createMessageElement = (content, ...classes) => {
   const div = document.createElement("div");
@@ -209,3 +266,19 @@ promptForm.addEventListener("submit", handleFormSubmit);
 promptForm
   .querySelector("#add-file-btn")
   .addEventListener("click", () => fileInput.click());
+
+initTheme();
+themeToggleBtn.addEventListener("click", toggleTheme);
+
+document.querySelectorAll(".lang-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    setLanguage(btn.dataset.lang);
+  });
+  if (btn.dataset.lang === currentLang) {
+    btn.classList.add("active");
+  }
+});
+
+updateLanguage();

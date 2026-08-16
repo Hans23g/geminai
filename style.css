@@ -63,14 +63,59 @@ body.dark-mode {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-body.dark-mode .theme-toggle {
-  background: var(--dark-secondary);
-  color: var(--dark-text);
+.language-switcher {
+  position: fixed;
+  top: 20px;
+  right: 80px;
+  display: flex;
+  gap: 8px;
+  z-index: 1000;
+  background: var(--light-secondary);
+  padding: 6px;
+  border-radius: 26px;
+  border: 1px solid var(--light-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.theme-toggle:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+body.dark-mode .language-switcher {
+  background: var(--dark-secondary);
+  border-color: var(--dark-border);
+}
+
+.lang-btn {
+  padding: 6px 14px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 20px;
+  color: var(--light-subtext);
+  transition: var(--transition);
+}
+
+body.dark-mode .lang-btn {
+  color: var(--dark-subtext);
+}
+
+.lang-btn.active {
+  background: white;
+  color: var(--light-accent);
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+}
+
+body.dark-mode .lang-btn.active {
+  background: var(--dark-tertiary);
+  color: var(--dark-accent);
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+}
+
+.lang-btn:hover:not(.active) {
+  color: var(--light-text);
+}
+
+body.dark-mode .lang-btn:hover:not(.active) {
+  color: var(--dark-text);
 }
 
 .container {
