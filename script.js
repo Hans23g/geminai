@@ -4,7 +4,6 @@ const promptForm = document.querySelector(".prompt-form");
 const promptInput = promptForm.querySelector(".prompt-input");
 const fileInput = promptForm.querySelector("#file-input");
 const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
-const themeToggleBtn = document.querySelector("#theme-toggle-btn");
 
 const searchParams = new URLSearchParams(window.location.search);
 let API_KEY = searchParams.get("key");
