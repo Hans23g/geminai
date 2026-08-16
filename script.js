@@ -6,8 +6,8 @@ const fileInput = promptForm.querySelector("#file-input");
 const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
 
 const searchParams = new URLSearchParams(window.location.search);
-const API_KEY = searchParams.get("key"); // get from https://aistudio.google.com/app/apikey
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${API_KEY}`;
+const API_KEY = searchParams.get("key");
+const API_URL = `/api/chat`;
 let controller, typingInterval;
 const chatHistory = [];
 const userData = { message: "", file: {} };
