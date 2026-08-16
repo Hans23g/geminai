@@ -10,6 +10,9 @@ let API_KEY = searchParams.get("key");
 const API_URL = `/api/chat`;
 let apiKeys = [];
 let currentApiKeyIndex = 0;
+let controller, typingInterval;
+const chatHistory = [];
+const userData = { message: "", file: {} };
 
 const loadApiKeys = () => {
   const saved = localStorage.getItem("apiKeys");
