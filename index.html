@@ -12,10 +12,13 @@
   </head>
   <body>
     <div class="header-controls">
-      <button class="theme-toggle material-symbols-rounded" id="theme-toggle-btn">dark_mode</button>
       <div class="dropdown-menu">
-        <button class="menu-btn material-symbols-rounded" id="menu-btn">more_vert</button>
+        <button class="menu-btn material-symbols-rounded" id="menu-btn">menu</button>
         <div class="dropdown-content" id="dropdown-content">
+          <button class="dropdown-item" id="theme-toggle-btn">
+            <span class="material-symbols-rounded">dark_mode</span>
+            <span id="theme-label">Dark Mode</span>
+          </button>
           <button class="dropdown-item" id="settings-menu-btn">
             <span class="material-symbols-rounded">settings</span>
             <span>Settings</span>

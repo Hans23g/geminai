@@ -47,7 +47,8 @@ const initTheme = () => {
   const savedTheme = localStorage.getItem("theme") || "light";
   if (savedTheme === "dark") {
     document.body.classList.add("dark-mode");
-    themeToggleBtn.textContent = "light_mode";
+    const themeLabel = document.querySelector("#theme-label");
+    themeLabel.textContent = "Light Mode";
   }
 };
 
@@ -55,7 +56,8 @@ const toggleTheme = () => {
   document.body.classList.toggle("dark-mode");
   const isDark = document.body.classList.contains("dark-mode");
   localStorage.setItem("theme", isDark ? "dark" : "light");
-  themeToggleBtn.textContent = isDark ? "light_mode" : "dark_mode";
+  const themeLabel = document.querySelector("#theme-label");
+  themeLabel.textContent = isDark ? "Light Mode" : "Dark Mode";
 };
 
 const translations = {
@@ -367,7 +369,76 @@ promptForm
   .addEventListener("click", () => fileInput.click());
 
 initTheme();
-themeToggleBtn.addEventListener("click", toggleTheme);
+
+const menuBtn = document.querySelector("#menu-btn");
+const dropdownContent = document.querySelector("#dropdown-content");
+const themeToggleBtn = document.querySelector("#theme-toggle-btn");
+const settingsMenuBtn = document.querySelector("#settings-menu-btn");
+const settingsModal = document.querySelector("#settings-modal");
+const closeModalBtn = document.querySelector("#close-modal");
+const saveApiKeysBtn = document.querySelector("#save-api-keys");
+const clearApiKeysBtn = document.querySelector("#clear-api-keys");
+const apiKeysInput = document.querySelector("#api-keys-input");
+const apiStatus = document.querySelector("#api-status");
+
+themeToggleBtn.addEventListener("click", () => {
+  toggleTheme();
+  dropdownContent.classList.remove("active");
+});
+
+menuBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropdownContent.classList.toggle("active");
+});
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".dropdown-menu")) {
+    dropdownContent.classList.remove("active");
+  }
+});
+
+settingsMenuBtn.addEventListener("click", () => {
+  dropdownContent.classList.remove("active");
+  settingsModal.classList.add("active");
+});
+
+closeModalBtn.addEventListener("click", () => {
+  settingsModal.classList.remove("active");
+});
+
+settingsModal.addEventListener("click", (e) => {
+  if (e.target === settingsModal) {
+    settingsModal.classList.remove("active");
+  }
+});
+
+saveApiKeysBtn.addEventListener("click", () => {
+  const keys = apiKeysInput.value.split(",");
+  if (keys.some(k => k.trim())) {
+    saveApiKeys(keys);
+    apiStatus.textContent = `${apiKeys.length} API key berhasil disimpan`;
+    apiStatus.classList.add("success");
+    apiStatus.classList.remove("error");
+    setTimeout(() => {
+      settingsModal.classList.remove("active");
+      apiStatus.classList.remove("success");
+    }, 2000);
+  } else {
+    apiStatus.textContent = "Masukkan minimal 1 API key";
+    apiStatus.classList.add("error");
+    apiStatus.classList.remove("success");
+  }
+});
+
+clearApiKeysBtn.addEventListener("click", () => {
+  if (confirm("Hapus semua API key?")) {
+    saveApiKeys([]);
+    apiKeysInput.value = "";
+    apiStatus.textContent = "Semua API key dihapus";
+    apiStatus.classList.add("error");
+    apiStatus.classList.remove("success");
+  }
+});
 
 document.querySelectorAll(".lang-btn").forEach(btn => {
   btn.addEventListener("click", () => {
