@@ -491,6 +491,8 @@ body.dark-mode .prompt-form #send-prompt-btn:hover {
   position: relative;
   display: flex;
   align-items: center;
+  width: 40px;
+  height: 40px;
 }
 
 .prompt-form .file-upload-wrapper :where(button, img) {
@@ -499,16 +501,17 @@ body.dark-mode .prompt-form #send-prompt-btn:hover {
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
-  position: absolute;
   border: none;
   background: transparent;
   cursor: pointer;
+  font-size: 1.2rem;
 }
 
 .prompt-form .file-upload-wrapper #add-file-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .prompt-form .file-upload-wrapper.active #add-file-btn {
@@ -516,19 +519,27 @@ body.dark-mode .prompt-form #send-prompt-btn:hover {
 }
 
 .prompt-form .file-upload-wrapper.active.img-attached img {
-  display: block;
+  display: flex;
+  position: relative;
 }
 
 .prompt-form .file-upload-wrapper.active.file-attached .file-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  color: var(--light-accent);
+}
+
+body.dark-mode .prompt-form .file-upload-wrapper.active.file-attached .file-icon {
+  color: var(--dark-accent);
 }
 
 .prompt-form .file-upload-wrapper.active:hover #cancel-file-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .prompt-form #stop-response-btn,
