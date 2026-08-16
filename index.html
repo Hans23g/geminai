@@ -16,6 +16,29 @@
       <button class="lang-btn active" data-lang="en">EN</button>
       <button class="lang-btn" data-lang="id">ID</button>
     </div>
+    <button class="settings-btn material-symbols-rounded" id="settings-btn">settings</button>
+    
+    <div class="modal" id="settings-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>API Settings</h2>
+          <button class="close-modal" id="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="api-key-section">
+            <label>API Keys (pisahkan dengan koma)</label>
+            <textarea id="api-keys-input" placeholder="Masukkan API key, API key 2, API key 3..."></textarea>
+            <small>Sistem akan otomatis pindah ke API key berikutnya jika quota habis</small>
+          </div>
+          <div class="modal-actions">
+            <button id="save-api-keys" class="btn-primary">Simpan</button>
+            <button id="clear-api-keys" class="btn-secondary">Hapus Semua</button>
+          </div>
+          <div id="api-status" class="api-status"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="container">
       <header class="app-header">
         <h1 class="heading">Hello, there</h1>

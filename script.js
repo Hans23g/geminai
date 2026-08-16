@@ -7,11 +7,41 @@ const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
 const themeToggleBtn = document.querySelector("#theme-toggle-btn");
 
 const searchParams = new URLSearchParams(window.location.search);
-const API_KEY = searchParams.get("key");
+let API_KEY = searchParams.get("key");
 const API_URL = `/api/chat`;
-let controller, typingInterval;
-const chatHistory = [];
-const userData = { message: "", file: {} };
+let apiKeys = [];
+let currentApiKeyIndex = 0;
+
+const loadApiKeys = () => {
+  const saved = localStorage.getItem("apiKeys");
+  if (saved) {
+    apiKeys = saved.split(",").map(k => k.trim()).filter(k => k);
+    if (apiKeys.length > 0) {
+      API_KEY = apiKeys[0];
+    }
+  }
+};
+
+const saveApiKeys = (keys) => {
+  apiKeys = keys.filter(k => k.trim());
+  localStorage.setItem("apiKeys", apiKeys.join(","));
+  if (apiKeys.length > 0) {
+    API_KEY = apiKeys[0];
+    currentApiKeyIndex = 0;
+  }
+};
+
+const switchToNextApiKey = () => {
+  if (apiKeys.length > 1) {
+    currentApiKeyIndex = (currentApiKeyIndex + 1) % apiKeys.length;
+    API_KEY = apiKeys[currentApiKeyIndex];
+    console.log(`Switched to API key ${currentApiKeyIndex + 1}`);
+    return true;
+  }
+  return false;
+};
+
+loadApiKeys();
 
 const initTheme = () => {
   const savedTheme = localStorage.getItem("theme") || "light";
@@ -58,7 +88,58 @@ let currentLang = localStorage.getItem("language") || "en";
 const setLanguage = (lang) => {
   currentLang = lang;
   localStorage.setItem("language", lang);
-  updateLanguage();
+updateLanguage();
+
+const settingsBtn = document.querySelector("#settings-btn");
+const settingsModal = document.querySelector("#settings-modal");
+const closeModalBtn = document.querySelector("#close-modal");
+const saveApiKeysBtn = document.querySelector("#save-api-keys");
+const clearApiKeysBtn = document.querySelector("#clear-api-keys");
+const apiKeysInput = document.querySelector("#api-keys-input");
+const apiStatus = document.querySelector("#api-status");
+
+settingsBtn.addEventListener("click", () => {
+  settingsModal.classList.add("active");
+  apiKeysInput.value = apiKeys.join(", ");
+});
+
+closeModalBtn.addEventListener("click", () => {
+  settingsModal.classList.remove("active");
+});
+
+settingsModal.addEventListener("click", (e) => {
+  if (e.target === settingsModal) {
+    settingsModal.classList.remove("active");
+  }
+});
+
+saveApiKeysBtn.addEventListener("click", () => {
+  const keys = apiKeysInput.value.split(",");
+  if (keys.some(k => k.trim())) {
+    saveApiKeys(keys);
+    apiStatus.textContent = `${apiKeys.length} API key berhasil disimpan`;
+    apiStatus.classList.add("success");
+    apiStatus.classList.remove("error");
+    setTimeout(() => {
+      settingsModal.classList.remove("active");
+      apiStatus.classList.remove("success");
+    }, 2000);
+  } else {
+    apiStatus.textContent = "Masukkan minimal 1 API key";
+    apiStatus.classList.add("error");
+    apiStatus.classList.remove("success");
+  }
+});
+
+clearApiKeysBtn.addEventListener("click", () => {
+  if (confirm("Hapus semua API key?")) {
+    saveApiKeys([]);
+    apiKeysInput.value = "";
+    apiStatus.textContent = "Semua API key dihapus";
+    apiStatus.classList.add("error");
+    apiStatus.classList.remove("success");
+  }
+});
 };
 
 const updateLanguage = () => {
