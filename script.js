@@ -60,6 +60,7 @@ const generateResponse = async (botMsgDiv) => {
     ],
   });
   try {
+    console.log('Request body:', JSON.stringify({ contents: chatHistory }));
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
