@@ -229,6 +229,9 @@ document.querySelector("#delete-chats-btn").addEventListener("click", () => {
   if (confirm("Hapus semua chat? Tindakan ini tidak bisa dibatalkan.")) {
     chatHistory.length = 0;
     chatsContainer.innerHTML = "";
+    userData.file = {};
+    fileUploadWrapper.classList.remove("file-attached", "img-attached", "active");
+    promptInput.value = "";
     document.body.classList.remove("chats-active", "bot-responding");
   }
 });
