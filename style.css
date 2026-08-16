@@ -485,26 +485,46 @@ body.dark-mode .prompt-form #send-prompt-btn:hover {
 
 .prompt-form .file-upload-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .prompt-form .file-upload-wrapper :where(button, img) {
   display: none;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
   position: absolute;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.prompt-form .file-upload-wrapper #add-file-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .prompt-form .file-upload-wrapper.active #add-file-btn {
   display: none;
 }
 
-.prompt-form .file-upload-wrapper.active.img-attached img,
+.prompt-form .file-upload-wrapper.active.img-attached img {
+  display: block;
+}
+
 .prompt-form .file-upload-wrapper.active.file-attached .file-icon {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .prompt-form .file-upload-wrapper.active:hover #cancel-file-btn {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .prompt-form #stop-response-btn,
@@ -514,9 +534,11 @@ body.bot-responding .prompt-form .file-upload-wrapper {
 
 body.bot-responding .prompt-form #stop-response-btn {
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.prompt-form :is(#stop-response-btn:hover, #cancel-file-btn) {
+.prompt-form :is(#stop-response-btn:hover, #cancel-file-btn:hover) {
   color: #ef4444;
 }
 
