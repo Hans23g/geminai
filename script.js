@@ -98,6 +98,34 @@ const clearApiKeysBtn = document.querySelector("#clear-api-keys");
 const apiKeysInput = document.querySelector("#api-keys-input");
 const apiStatus = document.querySelector("#api-status");
 
+const menuBtn = document.querySelector("#menu-btn");
+const dropdownContent = document.querySelector("#dropdown-content");
+const settingsMenuBtn = document.querySelector("#settings-menu-btn");
+
+menuBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropdownContent.classList.toggle("active");
+});
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".dropdown-menu")) {
+    dropdownContent.classList.remove("active");
+  }
+});
+
+settingsMenuBtn.addEventListener("click", () => {
+  dropdownContent.classList.remove("active");
+  settingsModal.classList.add("active");
+});
+
+settingsBtn = document.querySelector("#settings-btn");
+const settingsModal = document.querySelector("#settings-modal");
+const closeModalBtn = document.querySelector("#close-modal");
+const saveApiKeysBtn = document.querySelector("#save-api-keys");
+const clearApiKeysBtn = document.querySelector("#clear-api-keys");
+const apiKeysInput = document.querySelector("#api-keys-input");
+const apiStatus = document.querySelector("#api-status");
+
 settingsBtn.addEventListener("click", () => {
   settingsModal.classList.add("active");
   apiKeysInput.value = apiKeys.join(", ");

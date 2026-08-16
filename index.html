@@ -11,12 +11,24 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <button class="theme-toggle material-symbols-rounded" id="theme-toggle-btn">dark_mode</button>
-    <div class="language-switcher">
-      <button class="lang-btn active" data-lang="en">EN</button>
-      <button class="lang-btn" data-lang="id">ID</button>
+    <div class="header-controls">
+      <button class="theme-toggle material-symbols-rounded" id="theme-toggle-btn">dark_mode</button>
+      <div class="dropdown-menu">
+        <button class="menu-btn material-symbols-rounded" id="menu-btn">more_vert</button>
+        <div class="dropdown-content" id="dropdown-content">
+          <button class="dropdown-item" id="settings-menu-btn">
+            <span class="material-symbols-rounded">settings</span>
+            <span>Settings</span>
+          </button>
+          <div class="dropdown-divider"></div>
+          <div class="lang-group">
+            <span class="lang-label">Language</span>
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="id">ID</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <button class="settings-btn material-symbols-rounded" id="settings-btn">settings</button>
     
     <div class="modal" id="settings-modal">
       <div class="modal-content">
