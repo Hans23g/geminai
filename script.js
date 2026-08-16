@@ -92,57 +92,6 @@ const setLanguage = (lang) => {
   updateLanguage();
 };
 
-settingsBtn = document.querySelector("#settings-btn");
-const settingsModal = document.querySelector("#settings-modal");
-const closeModalBtn = document.querySelector("#close-modal");
-const saveApiKeysBtn = document.querySelector("#save-api-keys");
-const clearApiKeysBtn = document.querySelector("#clear-api-keys");
-const apiKeysInput = document.querySelector("#api-keys-input");
-const apiStatus = document.querySelector("#api-status");
-
-settingsBtn.addEventListener("click", () => {
-  settingsModal.classList.add("active");
-  apiKeysInput.value = apiKeys.join(", ");
-});
-
-closeModalBtn.addEventListener("click", () => {
-  settingsModal.classList.remove("active");
-});
-
-settingsModal.addEventListener("click", (e) => {
-  if (e.target === settingsModal) {
-    settingsModal.classList.remove("active");
-  }
-});
-
-saveApiKeysBtn.addEventListener("click", () => {
-  const keys = apiKeysInput.value.split(",");
-  if (keys.some(k => k.trim())) {
-    saveApiKeys(keys);
-    apiStatus.textContent = `${apiKeys.length} API key berhasil disimpan`;
-    apiStatus.classList.add("success");
-    apiStatus.classList.remove("error");
-    setTimeout(() => {
-      settingsModal.classList.remove("active");
-      apiStatus.classList.remove("success");
-    }, 2000);
-  } else {
-    apiStatus.textContent = "Masukkan minimal 1 API key";
-    apiStatus.classList.add("error");
-    apiStatus.classList.remove("success");
-  }
-});
-
-clearApiKeysBtn.addEventListener("click", () => {
-  if (confirm("Hapus semua API key?")) {
-    saveApiKeys([]);
-    apiKeysInput.value = "";
-    apiStatus.textContent = "Semua API key dihapus";
-    apiStatus.classList.add("error");
-    apiStatus.classList.remove("success");
-  }
-});
-
 const updateLanguage = () => {
   const t = translations[currentLang];
   document.querySelector(".app-header .heading").textContent = t.greeting;
