@@ -143,7 +143,6 @@ clearApiKeysBtn.addEventListener("click", () => {
     apiStatus.classList.remove("success");
   }
 });
-};
 
 const updateLanguage = () => {
   const t = translations[currentLang];
