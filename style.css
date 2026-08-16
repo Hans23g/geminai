@@ -458,7 +458,11 @@ body.dark-mode .prompt-wrapper button:hover {
 }
 
 .prompt-form .prompt-actions {
+  display: flex;
+  gap: 8px;
   margin-right: 4px;
+  align-items: center;
+  height: 100%;
 }
 
 .prompt-form .prompt-actions #send-prompt-btn {
