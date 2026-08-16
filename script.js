@@ -4,6 +4,7 @@ const promptForm = document.querySelector(".prompt-form");
 const promptInput = promptForm.querySelector(".prompt-input");
 const fileInput = promptForm.querySelector("#file-input");
 const fileUploadWrapper = promptForm.querySelector(".file-upload-wrapper");
+const themeToggleBtn = document.querySelector("#theme-toggle-btn");
 
 const searchParams = new URLSearchParams(window.location.search);
 const API_KEY = searchParams.get("key");
@@ -11,6 +12,24 @@ const API_URL = `/api/chat`;
 let controller, typingInterval;
 const chatHistory = [];
 const userData = { message: "", file: {} };
+
+const initTheme = () => {
+  const savedTheme = localStorage.getItem("theme") || "light";
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+    themeToggleBtn.textContent = "light_mode";
+  }
+};
+
+const toggleTheme = () => {
+  document.body.classList.toggle("dark-mode");
+  const isDark = document.body.classList.contains("dark-mode");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+  themeToggleBtn.textContent = isDark ? "light_mode" : "dark_mode";
+};
+
+initTheme();
+themeToggleBtn.addEventListener("click", toggleTheme);
 
 const createMessageElement = (content, ...classes) => {
   const div = document.createElement("div");
