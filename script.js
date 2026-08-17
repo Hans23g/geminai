@@ -156,10 +156,22 @@ const generateResponse = async (botMsgDiv) => {
   });
   try {
     const apiConfig = JSON.parse(localStorage.getItem("apiConfig") || "{}");
-    const provider = apiConfig.provider || "gemini";
-    const ollamaUrl = apiConfig.url || "http://localhost:11434/api/generate";
+    
+    const providers = [];
+    if (apiConfig.provider === "gemini") {
+      providers.push({ type: "gemini" });
+      providers.push({ type: "huggingface", key: apiConfig.key });
+    } else if (apiConfig.provider === "ollama") {
+      providers.push({ type: "ollama", url: apiConfig.url });
+      providers.push({ type: "gemini" });
+    } else if (apiConfig.provider === "huggingface") {
+      providers.push({ type: "huggingface", key: apiConfig.key });
+      providers.push({ type: "gemini" });
+    } else {
+      providers.push({ type: "gemini" });
+    }
 
-    const requestBody = { contents: chatHistory, provider, ollamaUrl };
+    const requestBody = { contents: chatHistory, providers };
     console.log('Request body:', JSON.stringify(requestBody));
     
     const response = await fetch(API_URL, {
