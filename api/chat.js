@@ -61,7 +61,6 @@ async function handleOllama(provider, contents) {
       prompt: message,
       stream: false,
     }),
-    timeout: 30000,
   });
 
   if (!response.ok) {
@@ -123,18 +122,34 @@ async function handleHuggingFace(provider, contents) {
     }
   );
 
-  const data = await response.json();
+  const text = await response.text();
+  let data;
+  
+  try {
+    data = JSON.parse(text);
+  } catch (e) {
+    console.error('HF Parse Error:', text.substring(0, 200));
+    throw new Error(`Invalid response from HF: ${text.substring(0, 50)}`);
+  }
 
   if (!response.ok) {
-    throw new Error(data.error?.[0]?.message || 'Hugging Face API error');
+    throw new Error(data.error?.[0]?.message || data.error || 'Hugging Face API error');
+  }
+
+  const generatedText = Array.isArray(data) ? data[0]?.generated_text : data?.generated_text;
+  
+  if (!generatedText) {
+    console.error('HF Response structure:', data);
+    throw new Error('Invalid response format from Hugging Face');
   }
 
   return {
     candidates: [
       {
         content: {
-          parts: [{ text: data[0]?.generated_text || 'No response' }],
+          parts: [{ text: generatedText }],
         },
       },
     ],
   };
+}
