@@ -155,15 +155,21 @@ const generateResponse = async (botMsgDiv) => {
     ],
   });
   try {
-    console.log('Request body:', JSON.stringify({ contents: chatHistory }));
+    const apiConfig = JSON.parse(localStorage.getItem("apiConfig") || "{}");
+    const provider = apiConfig.provider || "gemini";
+    const ollamaUrl = apiConfig.url || "http://localhost:11434/api/generate";
+
+    const requestBody = { contents: chatHistory, provider, ollamaUrl };
+    console.log('Request body:', JSON.stringify(requestBody));
+    
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contents: chatHistory }),
+      body: JSON.stringify(requestBody),
       signal: controller.signal,
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error.message);
+    if (!response.ok) throw new Error(data.error?.message || data.error);
 
     const responseText = data.candidates[0].content.parts[0].text
       .replace(/\*\*([^*]+)\*\*/g, "$1")
