@@ -114,7 +114,7 @@ async function handleHuggingFace(provider, contents) {
   const message = contents[contents.length - 1]?.parts?.[0]?.text || '';
 
   const response = await fetch(
-    'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1',
+    'https://api-inference.huggingface.co/models/google/flan-t5-base',
     {
       headers: { Authorization: `Bearer ${apiKey}` },
       method: 'POST',
