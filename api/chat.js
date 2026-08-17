@@ -28,11 +28,14 @@ export default async function handler(req, res) {
   for (const provider of apiProviders) {
     try {
       if (provider.type === 'ollama') {
-        return await handleOllama(provider, contents, res);
+        const result = await handleOllama(provider, contents);
+        return res.status(200).json(result);
       } else if (provider.type === 'gemini') {
-        return await handleGemini(contents, res);
+        const result = await handleGemini(contents);
+        return res.status(200).json(result);
       } else if (provider.type === 'huggingface') {
-        return await handleHuggingFace(provider, contents, res);
+        const result = await handleHuggingFace(provider, contents);
+        return res.status(200).json(result);
       }
     } catch (error) {
       lastError = error;
@@ -46,7 +49,7 @@ export default async function handler(req, res) {
   });
 }
 
-async function handleOllama(provider, contents, res) {
+async function handleOllama(provider, contents) {
   const url = provider.url || 'http://localhost:11434/api/generate';
   const message = contents[contents.length - 1]?.parts?.[0]?.text || '';
 
@@ -66,7 +69,7 @@ async function handleOllama(provider, contents, res) {
   }
 
   const data = await response.json();
-  return res.status(200).json({
+  return {
     candidates: [
       {
         content: {
@@ -74,10 +77,10 @@ async function handleOllama(provider, contents, res) {
         },
       },
     ],
-  });
+  };
 }
 
-async function handleGemini(contents, res) {
+async function handleGemini(contents) {
   const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
   const model = process.env.GOOGLE_GEMINI_API_MODEL || 'gemini-flash-latest';
 
@@ -100,10 +103,10 @@ async function handleGemini(contents, res) {
     throw new Error(data.error?.message || 'Gemini API error');
   }
 
-  return res.status(200).json(data);
+  return data;
 }
 
-async function handleHuggingFace(provider, contents, res) {
+async function handleHuggingFace(provider, contents) {
   const apiKey = provider.key;
   if (!apiKey) {
     throw new Error('Hugging Face API key not configured');
@@ -123,10 +126,10 @@ async function handleHuggingFace(provider, contents, res) {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.error?.message || 'Hugging Face API error');
+    throw new Error(data.error?.[0]?.message || 'Hugging Face API error');
   }
 
-  return res.status(200).json({
+  return {
     candidates: [
       {
         content: {
@@ -134,5 +137,4 @@ async function handleHuggingFace(provider, contents, res) {
         },
       },
     ],
-  });
-}
+  };
