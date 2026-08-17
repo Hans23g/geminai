@@ -250,10 +250,41 @@ body.dark-mode .api-key-section label {
   color: var(--dark-text);
 }
 
-.api-key-section textarea {
+.api-provider-select {
   width: 100%;
-  height: 100px;
-  padding: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--light-border);
+  border-radius: 8px;
+  background: var(--light-secondary);
+  color: var(--light-text);
+  font-family: "Poppins", sans-serif;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 15px;
+}
+
+body.dark-mode .api-provider-select {
+  background: var(--dark-tertiary);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+.api-provider-select:focus {
+  outline: none;
+  border-color: var(--light-accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+body.dark-mode .api-provider-select:focus {
+  border-color: var(--dark-accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.api-key-section textarea,
+.api-key-section input {
+  width: 100%;
+  padding: 10px 12px;
   border: 1px solid var(--light-border);
   border-radius: 8px;
   background: var(--light-secondary);
@@ -264,19 +295,22 @@ body.dark-mode .api-key-section label {
   transition: var(--transition);
 }
 
-body.dark-mode .api-key-section textarea {
+body.dark-mode .api-key-section textarea,
+body.dark-mode .api-key-section input {
   background: var(--dark-tertiary);
   border-color: var(--dark-border);
   color: var(--dark-text);
 }
 
-.api-key-section textarea:focus {
+.api-key-section textarea:focus,
+.api-key-section input:focus {
   outline: none;
   border-color: var(--light-accent);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
-body.dark-mode .api-key-section textarea:focus {
+body.dark-mode .api-key-section textarea:focus,
+body.dark-mode .api-key-section input:focus {
   border-color: var(--dark-accent);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }

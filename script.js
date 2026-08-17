@@ -336,31 +336,80 @@ settingsModal.addEventListener("click", (e) => {
 });
 
 saveApiKeysBtn.addEventListener("click", () => {
-  const keys = apiKeysInput.value.split(",");
-  if (keys.some(k => k.trim())) {
-    saveApiKeys(keys);
-    apiStatus.textContent = `${apiKeys.length} API key berhasil disimpan`;
-    apiStatus.classList.add("success");
-    apiStatus.classList.remove("error");
-    setTimeout(() => {
-      settingsModal.classList.remove("active");
+  const apiProvider = document.querySelector("#api-provider").value;
+  let config = { provider: apiProvider };
+
+  if (apiProvider === "gemini") {
+    const keys = apiKeysInput.value.split(",");
+    if (keys.some(k => k.trim())) {
+      config.keys = keys.map(k => k.trim()).filter(k => k);
+      localStorage.setItem("apiConfig", JSON.stringify(config));
+      apiStatus.textContent = `${config.keys.length} Gemini API key berhasil disimpan`;
+      apiStatus.classList.add("success");
+      apiStatus.classList.remove("error");
+      setTimeout(() => {
+        settingsModal.classList.remove("active");
+        apiStatus.classList.remove("success");
+      }, 2000);
+    } else {
+      apiStatus.textContent = "Masukkan minimal 1 API key";
+      apiStatus.classList.add("error");
       apiStatus.classList.remove("success");
-    }, 2000);
-  } else {
-    apiStatus.textContent = "Masukkan minimal 1 API key";
+    }
+  } else if (apiProvider === "ollama") {
+    const ollamaUrl = document.querySelector("#ollama-url-input").value.trim();
+    if (ollamaUrl) {
+      config.url = ollamaUrl;
+      localStorage.setItem("apiConfig", JSON.stringify(config));
+      apiStatus.textContent = `Ollama server ${ollamaUrl} berhasil disimpan`;
+      apiStatus.classList.add("success");
+      apiStatus.classList.remove("error");
+      setTimeout(() => {
+        settingsModal.classList.remove("active");
+        apiStatus.classList.remove("success");
+      }, 2000);
+    } else {
+      apiStatus.textContent = "Masukkan URL Ollama";
+      apiStatus.classList.add("error");
+      apiStatus.classList.remove("success");
+    }
+  } else if (apiProvider === "huggingface") {
+    const hfKey = document.querySelector("#huggingface-key-input").value.trim();
+    if (hfKey) {
+      config.key = hfKey;
+      localStorage.setItem("apiConfig", JSON.stringify(config));
+      apiStatus.textContent = "Hugging Face API key berhasil disimpan";
+      apiStatus.classList.add("success");
+      apiStatus.classList.remove("error");
+      setTimeout(() => {
+        settingsModal.classList.remove("active");
+        apiStatus.classList.remove("success");
+      }, 2000);
+    } else {
+      apiStatus.textContent = "Masukkan Hugging Face API key";
+      apiStatus.classList.add("error");
+      apiStatus.classList.remove("success");
+    }
+  }
+});
+
+clearApiKeysBtn.addEventListener("click", () => {
+  if (confirm("Hapus semua API configuration?")) {
+    localStorage.removeItem("apiConfig");
+    document.querySelector("#api-keys-input").value = "";
+    document.querySelector("#ollama-url-input").value = "http://localhost:11434";
+    document.querySelector("#huggingface-key-input").value = "";
+    apiStatus.textContent = "Semua API config dihapus";
     apiStatus.classList.add("error");
     apiStatus.classList.remove("success");
   }
 });
 
-clearApiKeysBtn.addEventListener("click", () => {
-  if (confirm("Hapus semua API key?")) {
-    saveApiKeys([]);
-    apiKeysInput.value = "";
-    apiStatus.textContent = "Semua API key dihapus";
-    apiStatus.classList.add("error");
-    apiStatus.classList.remove("success");
-  }
+document.querySelector("#api-provider").addEventListener("change", (e) => {
+  const provider = e.target.value;
+  document.querySelector("#gemini-section").style.display = provider === "gemini" ? "block" : "none";
+  document.querySelector("#ollama-section").style.display = provider === "ollama" ? "block" : "none";
+  document.querySelector("#huggingface-section").style.display = provider === "huggingface" ? "block" : "none";
 });
 
 document.querySelectorAll(".lang-btn").forEach(btn => {
